@@ -1,4 +1,7 @@
 "use strict";
+
+import { opciones } from "./lista-palabras.js";
+
 //Sonidos
 let win = new Audio("./sound/win.wav");
 let correct = new Audio("./sound/correct.wav");
@@ -51,17 +54,23 @@ const alfabeto = [
     "y",
     "z",
 ];
-const solucion = ["murcielago", "bota", "un", "niños"];
 
-let palabraElegida = solucion[Math.floor(Math.random() * solucion.length)];
+let seleccionCategoria = opciones[Math.floor(Math.random() * opciones.length)];
+let objetoSolucion = seleccionCategoria.palabras[Math.floor(Math.random() * seleccionCategoria.palabras.length)];
+let palabraElegida = objetoSolucion.palabra;
+let pistaElegida = objetoSolucion.pista;
 let solucionArray = palabraElegida.split("");
 let palDisplayArr = "_".repeat(palabraElegida.length).split("");
 
 const h2Elem = document.getElementById("h2");
+const h3Elem = document.getElementById("h3");
+const pistaElem = document.getElementById("pista");
 const keys = document.getElementById("keys");
+
+pistaElem.textContent = `Pista: ${pistaElegida}`;
+h3Elem.textContent = `La categoría es: ${seleccionCategoria.categoria}`;
 h2Elem.textContent = palDisplayArr.join(" ");
 
-console.log(palabraElegida);
 
 let fallos = 0;
 
@@ -74,15 +83,15 @@ function disableAllButtons() {
 
 function charCheck(button, guess) {
     if (solucionArray.includes(guess)) {
-        for (let elem of solucionArray) {
-            if (guess === elem) {
-                palDisplayArr[solucionArray.indexOf(elem)] = elem;
-                playSound(correct);
+        for (let i = 0; i < solucionArray.length; i++) {
+            if (solucionArray[i] === guess) {
+                palDisplayArr[i] = guess;
             }
         }
         h2Elem.textContent = palDisplayArr.join(" ");
     } else {
         fallos += 1;
+        //Enseñar fallos por consola, borrar cuando se añada la visibilidad de las partes del ahorcado
         console.log(`Fallos: ${fallos}`);
         playSound(fail);
     }
