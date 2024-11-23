@@ -86,6 +86,7 @@ function charCheck(button, guess) {
         for (let i = 0; i < solucionArray.length; i++) {
             if (solucionArray[i] === guess) {
                 palDisplayArr[i] = guess;
+                playSound(correct);
             }
         }
         h2Elem.textContent = palDisplayArr.join(" ");
